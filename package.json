@@ -1,6 +1,6 @@
 {
-  "name": "react-native-cubetap",
-  "version": "1.0.0",
+  "name": "react-native-cubetapsdk",
+  "version": "1.0.1",
   "description": "React Native Cubetap SDK",
   "main": "src/index.js",
   "react-native": "src/index.js",
@@ -28,5 +28,16 @@
   "license": "ISC",
   "devDependencies": {
     "react-native-builder-bob": "^0.23.2"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashtops/react-native-cubetap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yashtops/react-native-cubetap/issues"
+  },
+  "homepage": "https://github.com/yashtops/react-native-cubetap#readme"
 }
