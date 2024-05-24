@@ -1,6 +1,6 @@
 {
   "name": "react-native-cubetapsdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React Native Cubetap SDK",
   "main": "src/index.ts",
   "react-native": "src/index.ts",

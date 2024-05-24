@@ -9,11 +9,7 @@ It helps to connect with cubetape bluetooth device.
 ```
   npm install react-native-cubetapsdk
 ```
-Add the dependancy:
 
-```
-  npm install react-native-bluetooth-classic @react-native-async-storage/async-storage react-native-fs react-native-geolocation-service
-```
 
 ## Permission
 
@@ -35,23 +31,26 @@ Add required permissions in `AndroidMainfest.xml`
 ## Usage
 
 ```javascript
-import { 
-    isBluetoothEnabled, 
-    requestPermissions, 
-    enableBluetooth, 
-    startDiscovery,
-    getCubetapeDevice
-} from 'react-native-cubetapsdk'
+import { checkAllPermissions, requestAllPermissions } from 'react-native-cubetapsdk';
+import { enableBluetooth, isBluetoothEnabled, startDiscoveryCubetape } from 'react-native-cubetapsdk';
+
 
 const App = () =>{ 
     const [permissionStatus,setPermissionStatus] = useState()
-
+    const [bluetoothEnabled,setBluetoothEnabled] = useState()
+    
     useEffect(()=>{
         checkPermission()
     },[])
 
     const checkPermission = async () => {
-        const permissionStatus = await requestPermissions()
+        const permissionStatus = await checkAllPermissions()
+        setPermissionStatus(permissionStatus)
+
+        if(!permissionStatus){
+           const isPermissionGranted = await requestAllPermissions()
+           setPermissionStatus(isPermissionGranted)
+        }
     }
 
     useEffect(() => {
@@ -74,7 +73,7 @@ const App = () =>{
     }
 
     const getBluetoothDevice = async () => {
-        const device = await getCubetapeDevice();
+        const device = await startDiscoveryCubetape();
     }
 }
 ```
