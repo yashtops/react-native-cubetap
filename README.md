@@ -10,6 +10,9 @@ It helps to connect with cubetape bluetooth device.
   npm install react-native-cubetapsdk
 ```
 
+```
+  npm install react-native-bluetooth-classic @react-native-async-storage/async-storage react-native-fs react-native-geolocation-service
+```
 
 ## Permission
 
