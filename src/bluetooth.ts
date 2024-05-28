@@ -1,5 +1,6 @@
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 import { checkAllPermissions } from './permission';
+import { ToastAndroid } from 'react-native';
 
 export const isBluetoothEnabled = async () => {
     try {
@@ -34,11 +35,10 @@ export const startDiscoveryCubetape = async () => {
             const cubetapFilter = unpaired.filter((device) => device.name.toUpperCase().startsWith('C'))
             if (cubetapFilter.length > 0) {
                 return cubetapFilter;
-            }else{
+            } else {
                 return []
             }
         } catch (error) {
-            console.error(error)
             return error
         } finally {
             await RNBluetoothClassic.cancelDiscovery();
@@ -50,7 +50,6 @@ export const startDiscoveryCubetape = async () => {
 export const startDiscovery = async () => {
     const isBLenabled = await isBluetoothEnabled();
     const allPermission = await checkAllPermissions();
-
     if (!isBLenabled) {
         const enableBL = await enableBluetooth();
         return enableBL;
@@ -69,6 +68,15 @@ export const startDiscovery = async () => {
         }
     }
 };
+
+export const stopDiscovery = async () => {
+    try {
+        const cancelled = await RNBluetoothClassic.cancelDiscovery();
+        console.log(cancelled)
+    } catch (error) {
+        ToastAndroid.show(`Error occurred while attempting to cancel discover devices`, ToastAndroid.BOTTOM)
+    }
+}
 export const connectDevice = async (deviceId: string) => {
     try {
         const connected = await RNBluetoothClassic.connectToDevice(deviceId, { delimiter: '\r' });
@@ -78,8 +86,8 @@ export const connectDevice = async (deviceId: string) => {
         console.log(`Connected to device: ${deviceId}`);
         return connected;
     } catch (error) {
-        console.error(`Error connecting to device: ${deviceId}`, error);
-        throw error;
+        ToastAndroid.show(`Error connecting to device: ${deviceId}`, ToastAndroid.BOTTOM)
+        return false
     }
 };
 
@@ -122,3 +130,25 @@ export const unPairDevice = async (deviceId: string) => {
         throw error;
     }
 };
+
+export const getPairedDevices = async () => {
+    try {
+        const pairedDevices = await RNBluetoothClassic.getBondedDevices();
+        const cubetapFilter = pairedDevices.filter((device) => device.name.toUpperCase().startsWith('C'))
+        return cubetapFilter;
+    } catch (err) {
+        console.error('Error getting paired devices', err);
+        return [];
+    }
+}
+
+export const getConnectedDevice = async () => {
+    try {
+        const connectedDevices = await RNBluetoothClassic.getConnectedDevices();
+        const cubetapFilter = connectedDevices.filter((device) => device.name.toUpperCase().startsWith('C'))
+        return cubetapFilter;
+    } catch (err) {
+        console.error('Error getting connected devices', err);
+        return []
+    }
+}

@@ -1,4 +1,5 @@
 import { PermissionsAndroid } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 
 const ALL_PERMISSIONS = [
     PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
@@ -14,7 +15,8 @@ export const requestAllPermissions = async () => {
         if (!allGranted) {
             const notGranted = ALL_PERMISSIONS.filter((permission) => granted[permission] !== PermissionsAndroid.RESULTS.GRANTED);
             const alertMessage = notGranted.map((permission: any) => permission + ' is not granted.').join('\n');
-            console.error(alertMessage);
+            console.warn(alertMessage)
+            return false
         }
 
         console.log('ALL GRANTED', allGranted);
@@ -30,9 +32,10 @@ export const checkAllPermissions = async () => {
         const results = await Promise.all(ALL_PERMISSIONS.map(permission => PermissionsAndroid.check(permission)));
         const allGranted: boolean = results.every((isGranted: boolean) => isGranted);
         if (!allGranted) {
-            const notGranted = ALL_PERMISSIONS.filter(({}, index) => !results[index]);
+            const notGranted = ALL_PERMISSIONS.filter(({ }, index) => !results[index]);
             const alertMessage = notGranted.map((permission) => `${permission} is not granted.`).join('\n');
-            console.error(alertMessage);
+            console.warn(alertMessage)
+            return false
         }
         return allGranted;
     } catch (error) {
@@ -40,3 +43,18 @@ export const checkAllPermissions = async () => {
         return false;
     }
 };
+
+export const requestLocationService = async () => {
+    return new Promise((resolve) => {
+      Geolocation.getCurrentPosition(
+          () => {
+              resolve(true)
+          },
+          (error) => {
+              resolve(false)
+              console.error( error.message);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+  }) 
+  }

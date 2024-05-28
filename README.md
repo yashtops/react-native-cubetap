@@ -9,7 +9,13 @@ It helps to connect with cubetape bluetooth device.
 ```
   npm install react-native-cubetapsdk
 ```
+# Dependencies
 
+This library needs these dependencies to be installed in your project before you can use it:
+
+```
+npm install react-native-bluetooth-classic @react-native-async-storage/async-storage react-native-fs react-native-geolocation-service
+```
 
 ## Permission
 
